@@ -1,6 +1,6 @@
 "use client";
 
-import {SiteLayout} from "@/components";
+import {CustomModal, SiteLayout} from "@/components";
 import {useState} from "react";
 import {PiCaretLeftBold, PiCaretRightBold} from "react-icons/pi";
 import {useRouter} from "next/navigation";
@@ -15,6 +15,8 @@ export default function NewLoanRequestSelection() {
   const [selectedLoan, setSelectedLoan] = useState<LoanType>();
 
   const {selectedLoanId, setSelectedLoanList} = useLoanStore();
+
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   return (
     <SiteLayout headerText={"درخواست تسهیلات جدید"}>
@@ -120,7 +122,7 @@ export default function NewLoanRequestSelection() {
               const loan = selectedLoanId(selectedLoan.id);
 
               if (loan && loan.status === "end") {
-                alert("شما قبلا این تسهیلات را دریافت کردید");
+                setShowModal(true);
               } else {
                 setSelectedLoanList({
                   loanId: selectedLoan.id,
@@ -138,6 +140,38 @@ export default function NewLoanRequestSelection() {
           <PiCaretLeftBold />
         </button>
       </section>
+      <CustomModal
+        showModal={showModal}
+        setShowModal={() => {
+          setShowModal(false);
+        }}
+      >
+        <div className={"flex flex-col p-3 gap-3"}>
+          <span>درخواست شما قبلا ثبت شده</span>
+          <span>
+            برای اطلاعات بیشتر میتوانید به صفحه ی لیست درخواست های خود مراجعه
+            کنید
+          </span>
+          <div className={"flex flex-row justify-end gap-3"}>
+            <button
+              onClick={() => {
+                router.push(`/my-loan`);
+              }}
+              className={"text-white bg-blue-900 p-2 rounded"}
+            >
+              لیست درخواست ها
+            </button>
+            <button
+              onClick={() => {
+                setShowModal(false);
+              }}
+              className={"text-white bg-red-900 p-2 rounded"}
+            >
+              بستن
+            </button>
+          </div>
+        </div>
+      </CustomModal>
     </SiteLayout>
   );
 }
