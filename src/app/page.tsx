@@ -1,12 +1,9 @@
-import { Fragment } from "react";
+import { SiteLayout } from "@/components";
 
 export default function Home() {
   return (
-    <Fragment>
-      <main className={""}>
-      </main>
-      <footer className={""}>
-      </footer>
-    </Fragment>
+    <SiteLayout>
+      <section></section>
+    </SiteLayout>
   );
 }
