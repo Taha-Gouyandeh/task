@@ -1,7 +1,7 @@
 "use client";
 
 import {CustomInput, SiteLayout} from "@/components";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {PiCaretLeftBold, PiCaretRightBold} from "react-icons/pi";
 import {useParams, useRouter} from "next/navigation";
 import {ConvertNumber} from "@/utils";
@@ -16,7 +16,15 @@ export default function NewLoanRequestSelectionBankInfo() {
   const [shebaNumber, setShebaNumber] = useState<string>("");
   const [accountAverage, setAccountAverage] = useState<string>("");
 
-  const {setSelectedLoanList} = useLoanStore();
+  const {setSelectedLoanList, selectedLoanId} = useLoanStore();
+
+  useEffect(() => {
+    // Validation of the existence of previous information
+    const loan = selectedLoanId(String(slug));
+    if (loan && loan?.loan && loan?.userInfo === undefined) {
+      router.push("/loan-request/selection");
+    }
+  }, []);
 
   return (
     <SiteLayout headerText={"درخواست تسهیلات جدید"}>

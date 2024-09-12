@@ -5,7 +5,7 @@ import {PiCaretRightBold} from "react-icons/pi";
 import {useParams, useRouter} from "next/navigation";
 import {LoanType, repaymentType} from "@/DTO";
 import file from "@/assets/files/data.json";
-import {useMemo, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import useLoanStore from "@/zustand/loan/store";
 
 export default function NewLoanRequestSelectionCalculation() {
@@ -15,8 +15,21 @@ export default function NewLoanRequestSelectionCalculation() {
   const loanData: LoanType[] = file.data;
   const selectedLoan = loanData.find((el) => el.id === slug);
 
-  const {selectedLoanList, setSelectedLoanList} = useLoanStore();
-  console.log(selectedLoanList);
+  const {setSelectedLoanList, selectedLoanId} = useLoanStore();
+
+  useEffect(() => {
+    // Validation of the existence of previous information
+    const loan = selectedLoanId(String(slug));
+    if (
+      loan &&
+      loan?.loan &&
+      loan?.userInfo === undefined &&
+      loan?.bankInfo === undefined
+    ) {
+      router.push("/loan-request/selection");
+    }
+  }, []);
+
   const [selectMonth, setSelectMonth] = useState<repaymentType>();
 
   const monthlyPayment = useMemo(() => {
