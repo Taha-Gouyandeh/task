@@ -1,6 +1,6 @@
 "use client";
 
-import {SiteLayout} from "@/components";
+import {CustomModal, SiteLayout} from "@/components";
 import {PiCaretRightBold} from "react-icons/pi";
 import {useParams, useRouter} from "next/navigation";
 import {LoanType, repaymentType} from "@/DTO";
@@ -14,6 +14,8 @@ export default function NewLoanRequestSelectionCalculation() {
   const {slug} = params;
   const loanData: LoanType[] = file.data;
   const selectedLoan = loanData.find((el) => el.id === slug);
+
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   const {setSelectedLoanList, selectedLoanId} = useLoanStore();
 
@@ -147,14 +149,35 @@ export default function NewLoanRequestSelectionCalculation() {
                 status: "end",
                 repaymentType: selectMonth,
               });
-
-              router.push(`/my-loan`);
+              setShowModal(true);
             }
           }}
         >
           <span>ارسال درخواست</span>
         </button>
       </section>
+      <CustomModal
+        showModal={showModal}
+        setShowModal={() => {
+          setShowModal(false);
+        }}
+      >
+        <div className={"flex flex-col p-3 gap-3"}>
+          <span>درخواست شما با موفقیت انجام شد</span>
+          <span>
+            برای اطلاعات بیشتر میتوانید به صفحه ی لیست درخواست های خود مراجعه
+            کنید
+          </span>
+          <button
+            onClick={() => {
+              router.push(`/my-loan`);
+            }}
+            className={"text-white bg-blue-900 self-end p-2 rounded"}
+          >
+            لیست درخواست ها
+          </button>
+        </div>
+      </CustomModal>
     </SiteLayout>
   );
 }
