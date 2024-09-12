@@ -27,7 +27,7 @@ export default function NewLoanRequestSelectionUserInfo() {
   useEffect(() => {
     // Validation of the existence of previous information
     const loan = selectedLoanId(String(slug));
-    if (loan && loan?.loan === undefined) {
+    if ((loan && loan?.loan === undefined) || loan?.status === "end") {
       router.push("/loan-request/selection");
     }
   }, []);
