@@ -10,7 +10,9 @@ interface selectedLoanState {
 }
 
 const useLoanStore = create<selectedLoanState>((set) => ({
-  selectedLoanList: initialState as SelectedLoanType[],
+  selectedLoanList: initialState.filter(
+    (el) => el.status === "end",
+  ) as SelectedLoanType[],
 
   selectedLoanId: (id: string) => {
     return initialState.find((el) => el.loan?.id === id);
