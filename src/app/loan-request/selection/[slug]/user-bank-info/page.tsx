@@ -4,27 +4,23 @@ import {CustomInput, SiteLayout} from "@/components";
 import {useState} from "react";
 import {PiCaretLeftBold, PiCaretRightBold} from "react-icons/pi";
 import {useParams, useRouter} from "next/navigation";
-import {ConvertNumber, phoneNumberRegex} from "@/utils";
-import dynamic from "next/dynamic";
-
-const DateSelector = dynamic(() => import("@/components/date-selector"), {
-  loading: () => <span>loading...</span>,
-});
+import {ConvertNumber} from "@/utils";
 
 export default function NewLoanRequestSelection() {
   const router = useRouter();
   const params = useParams();
   const {slug} = params;
 
-  const [firstName, setFirstName] = useState<string>("");
-  const [lastName, setLastName] = useState<string>("");
-  const [phone, setPhone] = useState<string>("");
-  const [birthDay, setBirthDay] = useState<string>("");
+  const [accountNumber, setAccountNumber] = useState<string>("");
+  const [shebaNumber, setShebaNumber] = useState<string>("");
+  const [accountAverage, setAccountAverage] = useState<string>("");
 
   return (
     <SiteLayout headerText={"درخواست تسهیلات جدید"}>
       <header className={"text-center p-4"}>
-        <h1 className={"text-lg font-bold text-gray-800"}>اطلاعات متقاضی</h1>
+        <h1 className={"text-lg font-bold text-gray-800"}>
+          اطلاعات بانکی متقاضی
+        </h1>
       </header>
       <section className={"w-full p-4"}>
         <span className={"text-gray-600"}>
@@ -32,59 +28,55 @@ export default function NewLoanRequestSelection() {
         </span>
         <form className={"flex flex-row flex-wrap text-gray-700"}>
           <label className={"p-2 w-full md:w-1/2 flex flex-col"}>
-            <span>نام*</span>
-            <CustomInput
-              className={"border outline-0 rounded p-1"}
-              type={"text"}
-              aria-label={"نام کاربر"}
-              name={"first name"}
-              value={firstName}
-              onChange={(text) => {
-                setFirstName(text);
-              }}
-              validation={firstName.length >= 3}
-              textErr={"حداقل ۳ کاراکتر وارد کنید."}
-            />
-          </label>
-          <label className={"p-2 w-full md:w-1/2 flex flex-col"}>
-            <span>نام خانوادگی*</span>
-            <CustomInput
-              className={"border outline-0 rounded p-1"}
-              type={"text"}
-              aria-label={"نام خانودگی  کاربر"}
-              name={"last name"}
-              value={lastName}
-              onChange={(text) => {
-                setLastName(text);
-              }}
-              validation={lastName.length >= 3}
-              textErr={"حداقل ۳ کاراکتر وارد کنید."}
-            />
-          </label>
-          <label className={"p-2 w-full md:w-1/2 flex flex-col"}>
-            <span>شماره تماس*</span>
+            <span>شماره حساب*</span>
             <CustomInput
               dir={"ltr"}
               className={"border outline-0 rounded p-1"}
-              type={"tel"}
-              aria-label={"شماره تماس کاربر"}
-              name={"phone number"}
-              value={phone}
+              type={"text"}
+              aria-label={"شماره حساب"}
+              name={"Account Number"}
+              value={accountNumber}
               onChange={(text) => {
-                setPhone(ConvertNumber(text));
+                setAccountNumber(ConvertNumber(text));
               }}
-              validation={phoneNumberRegex.test(phone)}
-              textErr={"فرمت وارد شده صحیح نیست"}
+              validation={
+                accountNumber.length >= 12 && accountNumber.length <= 16
+              }
+              textErr={"حداقل بین ۱۲ تا ۱۶ کاراکتر وارد کنید."}
             />
           </label>
-          <div className={"p-2 w-full md:w-1/2 flex flex-col"}>
-            <span>تاریخ تولد*</span>
-            <DateSelector
-              handleSelect={(date) => {
-                setBirthDay(date);
+          <label className={"p-2 w-full md:w-1/2 flex flex-col"}>
+            <span>شماره شبا*</span>
+            <CustomInput
+              dir={"ltr"}
+              className={"border outline-0 rounded p-1"}
+              type={"text"}
+              aria-label={"شماره شبا"}
+              name={"Sheba Number"}
+              value={shebaNumber}
+              onChange={(text) => {
+                setShebaNumber("IR" + ConvertNumber(text));
               }}
+              validation={shebaNumber.length == 24}
+              textErr={"حداقل ۲۴ کاراکتر وارد کنید."}
             />
-          </div>
+          </label>
+          <label className={"p-2 w-full md:w-1/2 flex flex-col"}>
+            <span>میانگین حساب*</span>
+            <CustomInput
+              dir={"ltr"}
+              className={"border outline-0 rounded p-1"}
+              type={"text"}
+              aria-label={"میانگین حساب"}
+              name={"phone number"}
+              value={accountAverage}
+              onChange={(text) => {
+                setAccountAverage(ConvertNumber(text, true));
+              }}
+              validation={accountAverage.length >= 4}
+              textErr={"حداقل 4 کاراکتر وارد کنید."}
+            />
+          </label>
         </form>
       </section>
       <section className={"flex flex-row justify-between items-center"}>
@@ -103,15 +95,14 @@ export default function NewLoanRequestSelection() {
           className={`py-2 px-4 rounded text-white flex gap-1 items-center bg-blue-950 disabled:bg-blue-300 `}
           disabled={
             !(
-              firstName.length > 2 &&
-              lastName.length > 2 &&
-              birthDay.length >= 8 &&
-              birthDay.length <= 10 &&
-              phoneNumberRegex.test(phone)
+              accountNumber.length >= 12 &&
+              accountNumber.length <= 16 &&
+              shebaNumber.length == 24 &&
+              accountAverage.length >= 4
             )
           }
           onClick={() => {
-            router.push(`/loan-request/selection/${slug}/user-bank-info`);
+            router.push(`loan-request/selection/${slug}/user-bank-info`);
           }}
         >
           <span>بعدی</span>

@@ -12,7 +12,7 @@ export function ConvertToEnglishNumber(persianNumber: string) {
 }
 
 //return just english number
-export function ConvertNumber(text: string) {
+export function ConvertNumber(text: string, separate?: boolean) {
   const validRegex = /[۰-۹0-9,+.-]+/g;
 
   const filteredText = text.replace(/[^۰-۹0-9,+.-]/g, "");
@@ -21,8 +21,11 @@ export function ConvertNumber(text: string) {
     let converted = filteredText;
 
     converted = ConvertToEnglishNumber(filteredText);
-
-    return converted;
+    if (separate) {
+      return parseInt(converted.replaceAll(",", "")).toLocaleString();
+    } else {
+      return converted;
+    }
   } else {
     return "";
   }
