@@ -6,6 +6,7 @@ import {PiCaretLeftBold, PiCaretRightBold} from "react-icons/pi";
 import {useParams, useRouter} from "next/navigation";
 import {ConvertNumber, phoneNumberRegex} from "@/utils";
 import dynamic from "next/dynamic";
+import useLoanStore from "@/zustand/loan/store";
 
 const DateSelector = dynamic(() => import("@/components/date-selector"), {
   loading: () => <span>loading...</span>,
@@ -20,6 +21,8 @@ export default function NewLoanRequestSelectionUserInfo() {
   const [lastName, setLastName] = useState<string>("");
   const [phone, setPhone] = useState<string>("");
   const [birthDay, setBirthDay] = useState<string>("");
+
+  const {setSelectedLoanList} = useLoanStore();
 
   return (
     <SiteLayout headerText={"درخواست تسهیلات جدید"}>
@@ -111,7 +114,20 @@ export default function NewLoanRequestSelectionUserInfo() {
             )
           }
           onClick={() => {
-            router.push(`/loan-request/selection/${slug}/user-bank-info`);
+            if (slug) {
+              setSelectedLoanList({
+                loanId: String(slug),
+                userInfo: {
+                  firstName: firstName,
+                  lastName: lastName,
+                  birthDay: birthDay,
+                  phone: phone,
+                },
+                status: "in_progress",
+              });
+
+              router.push(`/loan-request/selection/${slug}/user-bank-info`);
+            }
           }}
         >
           <span>بعدی</span>
