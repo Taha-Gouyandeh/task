@@ -21,10 +21,14 @@ export default function NewLoanRequestSelectionCalculation() {
 
     const amount = selectedLoan?.loan?.amount || 0;
 
-    return Math.floor(
-      (amount * interestRate) / 100 +
-        amount / selectedLoan?.repaymentType?.value,
-    ).toLocaleString();
+    if (selectedLoan && selectedLoan?.repaymentType) {
+      return Math.floor(
+        (amount * interestRate) / 100 +
+          amount / selectedLoan?.repaymentType?.value,
+      ).toLocaleString();
+    } else {
+      return "0";
+    }
   }, [selectedLoan, selectedLoan?.repaymentType?.value]);
 
   const penaltyAmount = useMemo(() => {
