@@ -1,9 +1,9 @@
 "use client";
 
 import React from "react";
-import {CustomModal} from "@/DTO";
+import {CustomModalType} from "@/DTO";
 
-export const CustomModal: React.FC<CustomModal> = ({
+export const CustomModal: React.FC<CustomModalType> = ({
   showModal,
   setShowModal,
   children,
