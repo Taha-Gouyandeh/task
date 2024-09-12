@@ -6,7 +6,6 @@ import {PiCaretLeftBold, PiCaretRightBold} from "react-icons/pi";
 import {useRouter} from "next/navigation";
 import {LoanType} from "@/DTO";
 import file from "@/assets/files/data.json";
-import Link from "next/link";
 
 export default function NewLoanRequestSelection() {
   const router = useRouter();

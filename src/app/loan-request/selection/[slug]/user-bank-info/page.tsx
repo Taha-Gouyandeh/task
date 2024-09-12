@@ -6,7 +6,7 @@ import {PiCaretLeftBold, PiCaretRightBold} from "react-icons/pi";
 import {useParams, useRouter} from "next/navigation";
 import {ConvertNumber} from "@/utils";
 
-export default function NewLoanRequestSelection() {
+export default function NewLoanRequestSelectionBankInfo() {
   const router = useRouter();
   const params = useParams();
   const {slug} = params;
@@ -102,7 +102,7 @@ export default function NewLoanRequestSelection() {
             )
           }
           onClick={() => {
-            router.push(`loan-request/selection/${slug}/user-bank-info`);
+            router.push(`/loan-request/selection/${slug}/calculations`);
           }}
         >
           <span>بعدی</span>

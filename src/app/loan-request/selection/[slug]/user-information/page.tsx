@@ -11,7 +11,7 @@ const DateSelector = dynamic(() => import("@/components/date-selector"), {
   loading: () => <span>loading...</span>,
 });
 
-export default function NewLoanRequestSelection() {
+export default function NewLoanRequestSelectionUserInfo() {
   const router = useRouter();
   const params = useParams();
   const {slug} = params;
