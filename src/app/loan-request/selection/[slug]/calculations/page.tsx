@@ -147,7 +147,7 @@ export default function NewLoanRequestSelectionCalculation() {
                 repaymentType: selectMonth,
               });
 
-              router.push(`#`);
+              router.push(`/my-loan`);
             }
           }}
         >
