@@ -5,6 +5,7 @@ import {useState} from "react";
 import {PiCaretLeftBold, PiCaretRightBold} from "react-icons/pi";
 import {useParams, useRouter} from "next/navigation";
 import {ConvertNumber} from "@/utils";
+import useLoanStore from "@/zustand/loan/store";
 
 export default function NewLoanRequestSelectionBankInfo() {
   const router = useRouter();
@@ -14,6 +15,8 @@ export default function NewLoanRequestSelectionBankInfo() {
   const [accountNumber, setAccountNumber] = useState<string>("");
   const [shebaNumber, setShebaNumber] = useState<string>("");
   const [accountAverage, setAccountAverage] = useState<string>("");
+
+  const {setSelectedLoanList} = useLoanStore();
 
   return (
     <SiteLayout headerText={"درخواست تسهیلات جدید"}>
@@ -102,7 +105,19 @@ export default function NewLoanRequestSelectionBankInfo() {
             )
           }
           onClick={() => {
-            router.push(`/loan-request/selection/${slug}/calculations`);
+            if (slug) {
+              setSelectedLoanList({
+                loanId: String(slug),
+                bankInfo: {
+                  accountNumber: accountNumber,
+                  shebaNumber: shebaNumber,
+                  accountAverage: accountAverage,
+                },
+                status: "in_progress",
+              });
+
+              router.push(`/loan-request/selection/${slug}/calculations`);
+            }
           }}
         >
           <span>بعدی</span>

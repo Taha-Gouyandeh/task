@@ -6,12 +6,15 @@ import {PiCaretLeftBold, PiCaretRightBold} from "react-icons/pi";
 import {useRouter} from "next/navigation";
 import {LoanType} from "@/DTO";
 import file from "@/assets/files/data.json";
+import useLoanStore from "@/zustand/loan/store";
 
 export default function NewLoanRequestSelection() {
   const router = useRouter();
   const loanData: LoanType[] = file.data;
 
-  const [selectedLoanId, setSelectedLoanId] = useState<string>();
+  const [selectedLoan, setSelectedLoan] = useState<LoanType>();
+
+  const {selectedLoanId, setSelectedLoanList} = useLoanStore();
 
   return (
     <SiteLayout headerText={"درخواست تسهیلات جدید"}>
@@ -30,7 +33,7 @@ export default function NewLoanRequestSelection() {
               <li key={index} className={"text-gray-700 w-full md:w-1/2 p-2"}>
                 {/*if selected add shadow style*/}
                 <label
-                  className={`flex flex-row gap-2 w-full h-full border rounded p-3 bg-blue-50 cursor-pointer ${selectedLoanId === item.id && "shadow-lg"}`}
+                  className={`flex flex-row gap-2 w-full h-full border rounded p-3 bg-blue-50 cursor-pointer ${selectedLoan?.id === item.id && "shadow-lg"}`}
                 >
                   <input
                     className={""}
@@ -38,7 +41,7 @@ export default function NewLoanRequestSelection() {
                     type={"radio"}
                     name={"LoanSelect"}
                     onChange={() => {
-                      setSelectedLoanId(item.id);
+                      setSelectedLoan(item);
                     }}
                   />
                   <div className={"flex flex-col gap-2"}>
@@ -111,11 +114,24 @@ export default function NewLoanRequestSelection() {
         {/*If loan was not selected, the button will be disabled*/}
         <button
           className={`py-2 px-4 rounded text-white flex gap-1 items-center bg-blue-950 disabled:bg-blue-300`}
-          disabled={selectedLoanId === undefined}
+          disabled={selectedLoan?.id === undefined}
           onClick={() => {
-            router.push(
-              `/loan-request/selection/${selectedLoanId}/user-information`,
-            );
+            if (selectedLoan) {
+              const loan = selectedLoanId(selectedLoan.id);
+
+              if (loan && loan.status === "end") {
+                alert("شما قبلا این تسهیلات را دریافت کردید");
+              } else {
+                setSelectedLoanList({
+                  loanId: selectedLoan.id,
+                  loan: selectedLoan,
+                  status: "in_progress",
+                });
+                router.push(
+                  `/loan-request/selection/${selectedLoan?.id}/user-information`,
+                );
+              }
+            }
           }}
         >
           <span>بعدی</span>

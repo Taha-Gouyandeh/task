@@ -1,11 +1,12 @@
 "use client";
 
 import {SiteLayout} from "@/components";
-import {PiCaretLeftBold, PiCaretRightBold} from "react-icons/pi";
+import {PiCaretRightBold} from "react-icons/pi";
 import {useParams, useRouter} from "next/navigation";
-import {LoanType} from "@/DTO";
+import {LoanType, repaymentType} from "@/DTO";
 import file from "@/assets/files/data.json";
 import {useMemo, useState} from "react";
+import useLoanStore from "@/zustand/loan/store";
 
 export default function NewLoanRequestSelectionCalculation() {
   const router = useRouter();
@@ -14,7 +15,9 @@ export default function NewLoanRequestSelectionCalculation() {
   const loanData: LoanType[] = file.data;
   const selectedLoan = loanData.find((el) => el.id === slug);
 
-  const [selectMonth, setSelectMonth] = useState<number>();
+  const {selectedLoanList, setSelectedLoanList} = useLoanStore();
+  console.log(selectedLoanList);
+  const [selectMonth, setSelectMonth] = useState<repaymentType>();
 
   const monthlyPayment = useMemo(() => {
     if (!selectMonth) {
@@ -30,9 +33,9 @@ export default function NewLoanRequestSelectionCalculation() {
     const amount = selectedLoan?.amount || 0;
 
     return Math.floor(
-      (amount * interestRate) / 100 + amount / selectMonth,
+      (amount * interestRate) / 100 + amount / selectMonth?.value,
     ).toLocaleString();
-  }, [selectedLoan, selectMonth]);
+  }, [selectedLoan, selectMonth?.value]);
 
   const penaltyAmount = useMemo(() => {
     if (!selectedLoan?.amount || !selectedLoan?.penaltyRate) {
@@ -87,9 +90,9 @@ export default function NewLoanRequestSelectionCalculation() {
                 (repaymentItem, repaymentItemIndex) => (
                   <button
                     key={repaymentItemIndex}
-                    className={`bg-gray-50 p-1 rounded border text-sm cursor-pointer ${repaymentItem.value === selectMonth && "shadow-lg border-gray-500"}`}
+                    className={`bg-gray-50 p-1 rounded border text-sm cursor-pointer ${repaymentItem.value === selectMonth?.value && "shadow-lg border-gray-500"}`}
                     onClick={() => {
-                      setSelectMonth(repaymentItem.value);
+                      setSelectMonth(repaymentItem);
                     }}
                   >
                     {repaymentItem.name}
@@ -124,7 +127,15 @@ export default function NewLoanRequestSelectionCalculation() {
           className={`py-2 px-4 rounded text-white flex gap-1 items-center bg-blue-950 disabled:bg-blue-300 `}
           disabled={selectMonth === undefined}
           onClick={() => {
-            router.push(`#`);
+            if (slug) {
+              setSelectedLoanList({
+                loanId: String(slug),
+                status: "end",
+                repaymentType: selectMonth,
+              });
+
+              router.push(`#`);
+            }
           }}
         >
           <span>ارسال درخواست</span>
