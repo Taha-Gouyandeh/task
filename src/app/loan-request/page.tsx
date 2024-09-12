@@ -45,7 +45,7 @@ export default function NewLoanRequest() {
         </article>
       </section>
       <section className={"flex"}>
-        <Link href={"#"} className={"ms-auto bg-blue-950 py-2 px-4 rounded text-white"}>شروع درخواست</Link>
+        <Link href={"/loan-request/selection"} className={"ms-auto bg-blue-950 py-2 px-4 rounded text-white"}>شروع درخواست</Link>
       </section>
     </SiteLayout>
   );
