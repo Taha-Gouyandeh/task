@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: iran-sanse-fa;
+  font-style: normal;
+  font-weight: 400;
+  src: url("../assets/fonts/IRANSans(FaNum).ttf") format("truetype");
+}
+
+body {
+  overflow-x: hidden !important;
+  font-family: iran-sanse-fa, serif !important;
+}

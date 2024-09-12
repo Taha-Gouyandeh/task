@@ -1,0 +1,52 @@
+{
+  "overrides": [
+    {
+      "files": "*.js",
+      "options": {
+        "trailingComma": "all",
+        "semi": true,
+        "printWidth": 80,
+        "tabWidth": 2,
+        "useTabs": false,
+        "singleQuote": false,
+        "bracketSpacing": false
+      }
+    },
+    {
+      "files": "*.tsx",
+      "options": {
+        "trailingComma": "all",
+        "semi": true,
+        "printWidth": 80,
+        "tabWidth": 2,
+        "useTabs": false,
+        "singleQuote": false,
+        "bracketSpacing": false
+      }
+    },
+    {
+      "files": "*.jsx",
+      "options": {
+        "trailingComma": "all",
+        "semi": true,
+        "printWidth": 80,
+        "tabWidth": 2,
+        "useTabs": false,
+        "singleQuote": false,
+        "bracketSpacing": false
+      }
+    },
+    {
+      "files": "*.ts",
+      "options": {
+        "trailingComma": "all",
+        "semi": true,
+        "printWidth": 80,
+        "tabWidth": 2,
+        "useTabs": false,
+        "singleQuote": false,
+        "bracketSpacing": false
+      }
+    }
+  ]
+}
