@@ -51,7 +51,7 @@ const DateSelector: FC<{handleSelect: (date: string) => void}> = ({
         <select
           value={day}
           onChange={(e) => setDay(e.target.value)}
-          className="border bg-white rounded w-full text-center cursor-pointer p-0.5 outline-gray-300"
+          className={`border ${day && "border-green-700"} bg-white rounded w-full text-center cursor-pointer p-0.5 outline-0`}
         >
           <option hidden>روز</option>
           {[...Array(31)].map((_, index) => (
@@ -65,7 +65,7 @@ const DateSelector: FC<{handleSelect: (date: string) => void}> = ({
         <select
           value={month}
           onChange={(e) => setMonth(e.target.value)}
-          className="border bg-white rounded w-full text-center cursor-pointer p-0.5 outline-gray-300"
+          className={`border ${month && "border-green-700"} bg-white rounded w-full text-center cursor-pointer p-0.5 outline-0`}
         >
           <option hidden>ماه</option>
           {handleGetMonth().map((monthItem, index) => (
@@ -79,7 +79,7 @@ const DateSelector: FC<{handleSelect: (date: string) => void}> = ({
         <select
           value={year}
           onChange={(e) => setYear(e.target.value)}
-          className="border bg-white rounded w-full text-center cursor-pointer p-0.5 outline-gray-300"
+          className={`border ${year && "border-green-700"} bg-white rounded w-full text-center cursor-pointer p-0.5 outline-0`}
         >
           <option hidden>سال</option>
           {handleGetYear().map((yearItem, index) => (

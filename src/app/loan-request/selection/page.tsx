@@ -6,6 +6,7 @@ import {PiCaretLeftBold, PiCaretRightBold} from "react-icons/pi";
 import {useRouter} from "next/navigation";
 import {LoanType} from "@/DTO";
 import file from "@/assets/files/data.json";
+import Link from "next/link";
 
 export default function NewLoanRequestSelection() {
   const router = useRouter();
@@ -108,10 +109,15 @@ export default function NewLoanRequestSelection() {
           <PiCaretRightBold />
           <span>قبلی</span>
         </button>
-        {/*If it was not selected, the button will be disabled*/}
+        {/*If loan was not selected, the button will be disabled*/}
         <button
-          className={`py-2 px-4 rounded text-white flex gap-1 items-center ${selectedLoanId === undefined ? "bg-blue-300" : "bg-blue-950"}`}
+          className={`py-2 px-4 rounded text-white flex gap-1 items-center bg-blue-950 disabled:bg-blue-300`}
           disabled={selectedLoanId === undefined}
+          onClick={() => {
+            router.push(
+              `/loan-request/selection/${selectedLoanId}/user-information`,
+            );
+          }}
         >
           <span>بعدی</span>
           <PiCaretLeftBold />
